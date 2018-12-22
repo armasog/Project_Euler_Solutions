@@ -15,8 +15,8 @@ class TestSuite(unittest.TestCase):
         assert is_palindrome(1001) == True and is_palindrome(10001) == True and is_palindrome(
             1234) == False and is_palindrome(12345) == False
 
-    # def test_solution(self):
-    #     assert solution(2) == 9009
+    def test_solution(self):
+        assert solution(2) == 9009
 
 
 def is_palindrome(number):
@@ -34,4 +34,15 @@ def is_palindrome(number):
 
 
 def solution(digits):
-    pass
+    lower_bound_factor = int('1' + '0' * (digits - 1))
+    upper_bound_factor = int('9' * digits)
+    largest_palindrome_product = 0
+    factors = [i for i in range(lower_bound_factor, upper_bound_factor + 1)]
+    for j in factors:
+        for y in factors:
+            if is_palindrome(j * y) and j * y > largest_palindrome_product:
+                largest_palindrome_product = j * y
+    return largest_palindrome_product
+
+
+answer = solution(3)  # Answer evaluates to 906609
