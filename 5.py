@@ -15,16 +15,14 @@ class TestSuite(unittest.TestCase):
 
 
 def solution(upper_bound):
-    i = upper_bound - 1
-    number_of_successes = 0
-    while number_of_successes != upper_bound:
-        i += 1
-        number_of_successes = 0
-        for j in range(1, upper_bound + 1):  # TODO replace with set list to improve performance
-            if i % j == 0:  # TODO Shorten list based on shared divisibility rules IE 20 and 2
-                number_of_successes += 1
-    return i
+    smallest_multiple = 1
+    step = 1
+    for i in range(2, upper_bound + 1):
+        while smallest_multiple % i != 0:
+            smallest_multiple += step  # For efficiency we increment each number by the smallest multiple of the
+            # previous factor in the series so that we only need to test for divisibility of one number at a time
+        step = smallest_multiple
+    return smallest_multiple
 
 
-answer = solution(20)  #
-print(answer)
+answer = solution(20)  # Answer evaluates to 232792560
