@@ -45,4 +45,4 @@ def solution(upper_bound):
     return square_of_sum(upper_bound) - sum_of_squares(upper_bound)
 
 
-answer = solution(100)  # Answer evaluates to 232792560
+answer = solution(100)  # Answer evaluates to 25164150
