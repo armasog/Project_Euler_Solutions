@@ -70,7 +70,6 @@ class TestSuite(unittest.TestCase):
 
 def horizontal_product(starting_row, starting_column, digits):
     # Row and column numbers begin at 0
-    # TODO clarify conditions for starting_row to avoid running out of digits
     product = 1
     for i in range(starting_column, starting_column + digits):
         product *= grid[starting_row][i]
