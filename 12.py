@@ -25,68 +25,37 @@ What is the value of the first triangle number to have over five hundred divisor
 
 
 class TestSuite(unittest.TestCase):
-    def test_generate_triangle_numbers(self):
+    def test_generate_triangle_number(self):
         assert generate_triangle_number(7) == 28
 
-    def test_factor_out(self):
-        assert factor_out(21) == [1, 3, 7, 21]
-        
-    def test_all_factors(self):
-        assert prime_factors(28) == [1, 2, 4, 7, 14, 28]
+    def test_divisors(self):
+        assert divisors(21) == [1, 3, 7, 21]
 
     def test_solution(self):
         assert solution(5) == 28
 
 
 def generate_triangle_number(position):
-    result = 0
-    for i in range(1, position + 1):
-        result += i
-    return result
+    return int((position * (position + 1)) / 2)
 
 
-def is_prime(number):
-    for i in range(2, ceil(sqrt(number) + 1)):  # As a property of prime numbers, we only need to test factors less than
-        # or equal to the sqrt
-        if number == 2:
-            return True
-        if number % i == 0:
-            return False  # If the number is divisible by any number other than itself or 1 is_prime will evaluate to
-            #  False and break the loop
-    return True
-
-
-def factor_out(number):
+def divisors(number):
     result = []
-    j = number
-    for i in range(1, ceil(sqrt(number)) + 1):
-        if j % i == 0:
+    for i in range(1, number + 1):
+        if number % i == 0:
             if i not in result:
                 result.append(int(i))
-            j = j / i
-            if j not in result:
-                result.append(int(j))
     result = sorted(result)
     return result
-
-
-def prime_factors(number):
-    result = factor_out(number)
-    for factor in result:
-        additional_factors = []
-        if not is_prime(factor):
-            additional_factors = factor_out(factor)
-            for item in additional_factors:
-                if item not in result:
-                    result.append(item)
-    result = sorted(result)
-    return result
-
 
 def solution(target_divisors):
     for i in range(1, 999999999):
         triangle_number = generate_triangle_number(i)
-        factors = find_factors(triangle_number)
+        factors = divisors(triangle_number)
         if len(factors) > target_divisors:
             break
     return triangle_number
+
+
+for i in range(1, 7):
+    print(i, generate_triangle_number(i))
