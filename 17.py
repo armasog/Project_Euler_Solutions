@@ -24,9 +24,8 @@ class TestSuite(unittest.TestCase):
 
 def number_to_word(number):
     string = ''  # FIXME handing digits == 0
-    if type(number) == list:
-        pass  # FIXME handle list output in recursion
     ones_convention = {
+        '0': '',
         '1': 'One',
         '2': 'Two',
         '3': 'Three',
@@ -44,6 +43,7 @@ def number_to_word(number):
         '15': 'Fifteen',
     }
     tens_convention = {
+        '0': '',
         '2': 'Twenty',
         '3': 'Thirty',
         '4': 'Forty',
@@ -60,12 +60,12 @@ def number_to_word(number):
     if number > 15 and number <= 19 and number != 18:
         string = ones_convention[str(number)[1]] + 'teen'
     if number > 19 and number <= 99:
-        string = tens_convention[str(number)[0]] + number_to_word(
-            [int(str(number)[
-                     1])])  # Convert to string to access digit via index and then back to int to use as parameter
-    if number > 99:
-        string = ones_convention[str(number)[0]] + 'hundredand' + number_to_word(int(
-            str(number)[1:]))  # Avoid counting space between hundred and and as per the stipulations of the challenge
+        string = tens_convention[str(number)[0]] + ones_convention[str(number)[1]]  # FIXME Tens number is a one
+    if number > 99 and number <= 999:
+        string = ones_convention[str(number)[0]] + 'hundredand' + tens_convention[str(number)[1]] + ones_convention[
+            str(number)[2]]
+    if number == 1000:
+        string = 'onethousand'
     return string
 
 
