@@ -16,14 +16,15 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 class TestSuite(unittest.TestCase):
     def test_number_to_word(self):
         assert number_to_word(18) == 'Eighteen' and number_to_word(24) == 'TwentyFour' and number_to_word(
-            181) == 'OnehundredandEightyOne'
+            181) == 'OnehundredandEightyOne' and number_to_word(111) == 'OnehundredandEleven'
 
     def test_solution(self):
         assert solution(5) == 19
 
 
 def number_to_word(number):
-    string = ''  # FIXME handing digits == 0
+    # Arg number expected as int
+    string = ''
     ones_convention = {
         '0': '',
         '1': 'One',
@@ -41,6 +42,10 @@ def number_to_word(number):
         '13': 'Thirteen',
         '14': 'Fourteen',
         '15': 'Fifteen',
+        '16': 'Sixteen',
+        '17': 'Seventeen',
+        '18': 'Eighteen',
+        '19': 'Nineteen'
     }
     tens_convention = {
         '0': '',
@@ -53,28 +58,32 @@ def number_to_word(number):
         '8': 'Eighty',
         '9': 'Ninety',
     }
-    if number > 0 and number <= 15:
+
+    if number < 20:
         string = ones_convention[str(number)]
-    if number == 18:  # Special case to prevent counting as eightteen(sic)
-        string = 'Eighteen'
-    if number > 15 and number <= 19 and number != 18:
-        string = ones_convention[str(number)[1]] + 'teen'
-    if number > 19 and number <= 99:
-        string = tens_convention[str(number)[0]] + ones_convention[str(number)[1]]  # FIXME Tens number is a one
-    if number > 99 and number <= 999:
-        string = ones_convention[str(number)[0]] + 'hundredand' + tens_convention[str(number)[1]] + ones_convention[
-            str(number)[2]]
+    if 19 < number < 100:
+        string = tens_convention[str(number)[0]] + ones_convention[str(number)[1]]
+    if 99 < number < 1000:
+        string = ones_convention[str(number)[0]] + 'hundred'
+        if 9 < int(str(number)[1:]) < 20:
+            string += 'and' + ones_convention[str(number)[1:]]
+        if 0 < int(str(number)[1:]) < 10:  # Prevent key error from looking up 04 as opposed to 4 for example
+            string += 'and' + ones_convention[str(number)[2]]
+        if int(str(number)[1:]) > 19:
+            string += 'and' + tens_convention[str(number)[1]]
+            string += ones_convention[str(number)[2]]
     if number == 1000:
         string = 'onethousand'
+
     return string
 
 
 def solution(upper_bound):
+    # Arg upper_bound expected as int
     result = 0
     for i in range(1, upper_bound + 1):
         result += len(number_to_word(i))
     return result
 
 
-answer = solution(1000)
-print(answer)
+answer = solution(1000)  # Answer evaluates to 21124
