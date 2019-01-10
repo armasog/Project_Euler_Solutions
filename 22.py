@@ -13,9 +13,58 @@ What is the total of all the name scores in the file?
 
 
 class TestSuite(unittest.TestCase):
-    def test_name_scores(self):
-        assert name_scores(test_names) == 387
+    def test_alphabetical_value(self):
+        assert alphabetical_value('COLIN') == 53
 
+    def test_name_scores(self):
+        assert name_scores('test_names.txt') == 385
+
+
+def alphabetical_value(name):
+    letter_values = {
+        'A': 1,
+        'B': 2,
+        'C': 3,
+        'D': 4,
+        'E': 5,
+        'F': 6,
+        'G': 7,
+        'H': 8,
+        'I': 9,
+        'J': 10,
+        'K': 11,
+        'L': 12,
+        'M': 13,
+        'N': 14,
+        'O': 15,
+        'P': 16,
+        'Q': 17,
+        'R': 18,
+        'S': 19,
+        'T': 20,
+        'U': 21,
+        'V': 22,
+        'W': 23,
+        'X': 24,
+        'Y': 25,
+        'Z': 26,
+    }
+    result = 0
+    for char in name:
+        result += letter_values[char]
+    return result
 
 def name_scores(txt_file):
-    pass
+    # Accepts arg txt_file as string with file extension
+    result = 0
+    with open(txt_file, 'r') as txt_file:
+        names = txt_file.read().split('",')
+    names = sorted(names)
+    for i in range(len(names)):
+        names[i] = names[i].strip('"')
+        name_score = alphabetical_value(names[i]) * (i + 1)  # Add 1 to index since it is zero-based
+        result += name_score
+    return result
+
+
+answer = name_scores('names.txt')  # Answer evaluates to 871198282
